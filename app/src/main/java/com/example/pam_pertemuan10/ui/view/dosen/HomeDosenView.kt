@@ -60,7 +60,7 @@ fun HomeDosenView(
             FloatingActionButton(
                 onClick = onAddDosen,
                 shape = MaterialTheme.shapes.medium,
-                modifier = Modifier.padding(16.dp)
+                modifier = modifier.padding(16.dp)
             ) {
                 Icon(
                     imageVector = Icons.Default.Add,
