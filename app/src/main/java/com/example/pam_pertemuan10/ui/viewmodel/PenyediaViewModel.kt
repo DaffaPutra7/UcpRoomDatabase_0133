@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
-import com.example.pam_pertemuan10.ui.theme.KrsApp
+import com.example.pam_pertemuan10.KrsApp
 
 object PenyediaViewModel {
 
