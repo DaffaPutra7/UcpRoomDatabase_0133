@@ -68,11 +68,12 @@ fun InsertDosenView(
                 .fillMaxSize()
                 .padding(padding)
                 .padding(16.dp)
+
         ) {
             TopAppBar(
                 onBack = onBack,
                 showBackButton = true,
-                judul = "Tambah Dosen Pengampu"
+                judul = "Tambah Dosen"
             )
             InsertBodyDosen(
                 uiState = uiState,
