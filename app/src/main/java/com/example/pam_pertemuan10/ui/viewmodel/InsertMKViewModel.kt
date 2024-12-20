@@ -21,11 +21,11 @@ class InsertMKViewModel(private val repositoryMK: RepositoryMK) : ViewModel() {
     private fun validateMkFields(): Boolean{
         val event = mkState.mkEvent
         val errorState = MkErrorState(
-            kode = if (event.kode.isNotEmpty()) null else "Kode tidak boleh kosong",
-            nama = if (event.nama.isNotEmpty()) null else "Nama tidak boleh kosong",
-            sks = if (event.sks.isNotEmpty()) null else "SKS tidak boleh kosong",
-            semester = if (event.semester.isNotEmpty()) null else "Semester tidak boleh kosong",
-            jenis = if (event.jenis.isNotEmpty()) null else "Jenis tidak boleh kosong",
+            kode = if (event.kode.isNotEmpty()) null else "Kode Mata Kuliah tidak boleh kosong",
+            nama = if (event.nama.isNotEmpty()) null else "Nama Mata Kuliah tidak boleh kosong",
+            sks = if (event.sks.isNotEmpty()) null else "Jumlah SKS tidak boleh kosong",
+            semester = if (event.semester.isNotEmpty()) null else "Semester Mata Kuliah tidak boleh kosong",
+            jenis = if (event.jenis.isNotEmpty()) null else "Jenis Mata Kuliah tidak boleh kosong",
             dosenPengampu = if (event.dosenPengampu.isNotEmpty()) null else "Dosen Pengampu tidak boleh kosong"
         )
         mkState = mkState.copy(isEntryValid = errorState)
@@ -38,16 +38,16 @@ class InsertMKViewModel(private val repositoryMK: RepositoryMK) : ViewModel() {
                 try {
                     repositoryMK.insertMataKuliah(currentEvent.toMkEntity())
                     mkState = mkState.copy(
-                        snackBarMessage = "Data Berhasil Disimpan",
+                        snackBarMessage = "Data Mata Kuliah Berhasil Disimpan",
                         mkEvent = MkEvent(),
                         isEntryValid = MkErrorState()
                     )
                 } catch (e: Exception) {
-                    mkState = mkState.copy(snackBarMessage = "Data Gagal Disimpan")
+                    mkState = mkState.copy(snackBarMessage = "Data Mata Kuliah Gagal Disimpan")
                 }
             }
         } else{
-            mkState = mkState.copy(snackBarMessage = "Input tidak valid. Periksan kembali data Anda.")
+            mkState = mkState.copy(snackBarMessage = "Input tidak valid. Periksan kembali data mata kuliah Anda.")
         }
     }
     fun  resetSnackBarMessage(){
