@@ -27,12 +27,17 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.pam_pertemuan10.ui.customwidget.TopAppBar
+import com.example.pam_pertemuan10.ui.navigation.AlamatNavigasi
 import com.example.pam_pertemuan10.ui.viewmodel.InsertMKViewModel
 import com.example.pam_pertemuan10.ui.viewmodel.MkErrorState
 import com.example.pam_pertemuan10.ui.viewmodel.MkEvent
 import com.example.pam_pertemuan10.ui.viewmodel.MkUiState
 import com.example.pam_pertemuan10.ui.viewmodel.PenyediaViewModel
 import kotlinx.coroutines.launch
+
+object DestinasiInsertMK: AlamatNavigasi {
+    override val route: String = "insertmk"
+}
 
 @Composable
 fun InsertMkView(
