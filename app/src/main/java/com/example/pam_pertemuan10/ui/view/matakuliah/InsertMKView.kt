@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
@@ -97,7 +99,9 @@ fun InsertBodyMk(
     onClick:() -> Unit
 ){
     Column(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier
+            .fillMaxWidth()
+            .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -107,6 +111,9 @@ fun InsertBodyMk(
             errorState = uiState.isEntryValid,
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
         Button(
             onClick = onClick,
             modifier = Modifier.fillMaxWidth(),
@@ -119,16 +126,17 @@ fun InsertBodyMk(
 @Composable
 fun FormMataKuliah(
     mkEvent: MkEvent = MkEvent(),
-    onValueChange:(MkEvent) -> Unit = {},
+    onValueChange: (MkEvent) -> Unit = {},
     errorState: MkErrorState = MkErrorState(),
     modifier: Modifier = Modifier
-){
+) {
     val semester = listOf("Ganjil", "Genap")
     val jenis = listOf("Pemrograman", "Database", "Jaringan", "Desain")
 
-    Column(modifier = modifier.fillMaxWidth()
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
     ) {
-
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = mkEvent.nama,
@@ -140,7 +148,7 @@ fun FormMataKuliah(
             placeholder = { Text("Masukkan Nama Mata Kuliah") },
         )
         Text(
-            text = errorState.nama ?:"",
+            text = errorState.nama ?: "",
             color = Color.Red
         )
 
@@ -155,24 +163,23 @@ fun FormMataKuliah(
             placeholder = { Text("Masukkan Kode Mata Kuliah") },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        Text(text = errorState.kode?: "", color = Color.Red)
+        Text(text = errorState.kode ?: "", color = Color.Red)
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Semester")
-        Row (modifier = Modifier.fillMaxWidth())
-        {
-            semester.forEach{sem ->
-                Row (
+        Row(modifier = Modifier.fillMaxWidth()) {
+            semester.forEach { sem ->
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
-                ){
+                ) {
                     RadioButton(
                         selected = mkEvent.semester == sem,
                         onClick = {
                             onValueChange(mkEvent.copy(semester = sem))
                         },
                     )
-                    Text(text = sem,)
+                    Text(text = sem)
                 }
             }
         }
@@ -189,26 +196,26 @@ fun FormMataKuliah(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
         Text(
-            text = errorState.sks ?:"",
+            text = errorState.sks ?: "",
             color = Color.Red
         )
 
         Spacer(modifier = Modifier.height(16.dp))
         Text(text = "Jenis Mata Kuliah")
-        Row (modifier = Modifier.fillMaxWidth())
-        {
-            jenis.forEach{jenis ->
-                Row (
+        Column(modifier = Modifier.fillMaxWidth()) {
+            jenis.forEach { jenis ->
+                Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start
-                ){
+                    horizontalArrangement = Arrangement.Start,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     RadioButton(
                         selected = mkEvent.jenis == jenis,
                         onClick = {
                             onValueChange(mkEvent.copy(jenis = jenis))
                         },
                     )
-                    Text(text = jenis,)
+                    Text(text = jenis)
                 }
             }
         }
