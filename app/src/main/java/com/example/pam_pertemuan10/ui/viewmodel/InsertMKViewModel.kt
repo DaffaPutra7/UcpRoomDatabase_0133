@@ -5,12 +5,41 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.pam_pertemuan10.data.entity.Dosen
 import com.example.pam_pertemuan10.data.entity.MataKuliah
+import com.example.pam_pertemuan10.repository.RepositoryDosen
 import com.example.pam_pertemuan10.repository.RepositoryMK
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-class InsertMKViewModel(private val repositoryMK: RepositoryMK) : ViewModel() {
+class InsertMKViewModel(private val repositoryMK: RepositoryMK, private val repositoryDosen: RepositoryDosen) : ViewModel() {
     var mkState by mutableStateOf(MkUiState())
+
+    val dosenListState: StateFlow<List<Dosen>> = repositoryDosen.getAllDosen()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5000),
+            initialValue = emptyList()
+        )
+
+    var dosenListInsert by mutableStateOf<List<String>>(emptyList())
+        private set
+
+    fun fetchDosenList() {
+        viewModelScope.launch {
+            try {
+                repositoryDosen.getAllDosen()
+                    .collect { dosenList ->
+                        dosenListInsert = dosenList.map { it.nama }
+                    }
+            } catch (e: Exception) {
+                dosenListInsert = emptyList()
+            }
+        }
+    }
 
     fun updateMkState(mkEvent: MkEvent){
         mkState = mkState.copy(
