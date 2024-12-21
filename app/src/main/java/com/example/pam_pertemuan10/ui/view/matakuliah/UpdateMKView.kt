@@ -9,6 +9,8 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -32,6 +34,11 @@ fun UpdateMKView(
     val uiState = viewModel.updateUIState
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val dosenList by viewModel.dosenUpdateState.collectAsState()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchDosenUpdateList()
+    }
 
     LaunchedEffect(uiState.snackBarMessage) {
         println("LaunchedEffect triggered")
@@ -72,6 +79,7 @@ fun UpdateMKView(
                 onValueChange = { updatedEvent ->
                     viewModel.updateMkState(updatedEvent)
                 },
+                dosenList = dosenList,
                 onClick = {
                     coroutineScope.launch {
                         if (viewModel.validateMKFields()) {
