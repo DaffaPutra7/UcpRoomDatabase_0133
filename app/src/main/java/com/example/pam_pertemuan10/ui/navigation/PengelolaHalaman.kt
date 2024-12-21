@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.pam_pertemuan10.ui.homescreen.HomeApp
 import com.example.pam_pertemuan10.ui.view.dosen.DestinasiInsertDosen
 import com.example.pam_pertemuan10.ui.view.dosen.HomeDosenView
 import com.example.pam_pertemuan10.ui.view.dosen.InsertDosenView
@@ -24,8 +25,22 @@ fun PengelolaHalaman(
 ){
     NavHost(
         navController = navController,
-        startDestination = AlamatNavigasi.DestinasiHomeDosen.route
+        startDestination = AlamatNavigasi.DestinasiHomeApp.route
     ) {
+
+        composable(
+            route = AlamatNavigasi.DestinasiHomeApp.route
+        ){
+            HomeApp(
+                onHalamanHomeDosen = {
+                    navController.navigate(AlamatNavigasi.DestinasiHomeDosen.route)
+                },
+                onHalamanHomeMK = {
+                    navController.navigate(AlamatNavigasi.DestinasiHomeMK.route)
+                },
+                modifier = modifier
+            )
+        }
 
         composable(
             route = AlamatNavigasi.DestinasiHomeDosen.route
