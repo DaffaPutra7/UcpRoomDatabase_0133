@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun HomeDosenView(
+    onBack: () -> Unit = { },
     viewModel: HomeDosenViewModel = viewModel(factory = PenyediaViewModel.Factory),
     onAddDosen: () -> Unit = { },
     modifier: Modifier = Modifier
@@ -51,9 +52,9 @@ fun HomeDosenView(
     Scaffold(
         topBar = {
             TopAppBar(
-                onBack = { },
-                showBackButton = false,
-                judul = "Daftar Dosen Pengampu"
+                onBack = onBack,
+                showBackButton = true,
+                judul = "Daftar Dosen Pengampu",
             )
         },
         floatingActionButton = {
