@@ -24,7 +24,8 @@ object PenyediaViewModel {
 
         initializer {
             InsertMKViewModel(
-                krsApp().containerApp.repositoryMK
+                krsApp().containerApp.repositoryMK,
+                krsApp().containerApp.repositoryDosen
             )
         }
 
@@ -44,7 +45,8 @@ object PenyediaViewModel {
         initializer {
             UpdateMKViewModel(
                 createSavedStateHandle(),
-                krsApp().containerApp.repositoryMK
+                krsApp().containerApp.repositoryMK,
+                krsApp().containerApp.repositoryDosen
             )
         }
     }
