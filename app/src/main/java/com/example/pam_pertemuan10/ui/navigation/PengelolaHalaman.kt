@@ -49,6 +49,9 @@ fun PengelolaHalaman(
                 onAddDosen = {
                     navController.navigate(DestinasiInsertDosen.route)
                 },
+                onBack = {
+                    navController.popBackStack()
+                },
                 modifier = modifier
             )
         }
@@ -76,6 +79,9 @@ fun PengelolaHalaman(
                     println(
                         "PengelolaHalaman: kode = $kode"
                     )
+                },
+                onBack = {
+                    navController.popBackStack()
                 },
                 onAddMk = {
                     navController.navigate(DestinasiInsertMK.route)
