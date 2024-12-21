@@ -1,6 +1,8 @@
 package com.example.pam_pertemuan10.ui.view.matakuliah
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,7 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material3.Button
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
@@ -20,14 +26,19 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.pam_pertemuan10.data.entity.Dosen
 import com.example.pam_pertemuan10.ui.customwidget.TopAppBar
 import com.example.pam_pertemuan10.ui.navigation.AlamatNavigasi
 import com.example.pam_pertemuan10.ui.viewmodel.InsertMKViewModel
@@ -47,10 +58,16 @@ fun InsertMkView(
     onNavigate: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: InsertMKViewModel = viewModel(factory = PenyediaViewModel.Factory)
-){
+) {
     val uiState = viewModel.mkState
     val snackbarHostState = remember { SnackbarHostState() }
     val coroutineScope = rememberCoroutineScope()
+    val dosenList by viewModel.dosenListState.collectAsState()
+
+    // Panggil fetchDosenList saat pertama kali komponen di-load
+    LaunchedEffect(Unit) {
+        viewModel.fetchDosenList()
+    }
 
     LaunchedEffect(uiState.snackBarMessage) {
         uiState.snackBarMessage?.let { message ->
@@ -60,10 +77,11 @@ fun InsertMkView(
             }
         }
     }
+
     Scaffold(
         modifier = modifier,
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) }
-    ) {padding ->
+    ) { padding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -77,9 +95,10 @@ fun InsertMkView(
             )
             InsertBodyMk(
                 uiState = uiState,
-                onValueChange = {updateEvent ->
+                onValueChange = { updateEvent ->
                     viewModel.updateMkState(updateEvent)
                 },
+                dosenList = dosenList,
                 onClick = {
                     coroutineScope.launch {
                         viewModel.saveDataMk()
@@ -94,6 +113,7 @@ fun InsertMkView(
 @Composable
 fun InsertBodyMk(
     modifier: Modifier = Modifier,
+    dosenList: List<Dosen>,
     onValueChange: (MkEvent) -> Unit,
     uiState: MkUiState,
     onClick:() -> Unit
@@ -108,6 +128,7 @@ fun InsertBodyMk(
         FormMataKuliah(
             mkEvent = uiState.mkEvent,
             onValueChange = onValueChange,
+            dosenList = dosenList,
             errorState = uiState.isEntryValid,
             modifier = Modifier.fillMaxWidth()
         )
@@ -126,6 +147,7 @@ fun InsertBodyMk(
 @Composable
 fun FormMataKuliah(
     mkEvent: MkEvent = MkEvent(),
+    dosenList: List<Dosen>,
     onValueChange: (MkEvent) -> Unit = {},
     errorState: MkErrorState = MkErrorState(),
     modifier: Modifier = Modifier
@@ -216,6 +238,46 @@ fun FormMataKuliah(
                         },
                     )
                     Text(text = jenis)
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(text = "Dosen Pengampu")
+
+        var selectedDosen by remember { mutableStateOf("") }
+        var expanded by remember { mutableStateOf(false) }
+
+        Box(modifier = Modifier.fillMaxWidth()) {
+            OutlinedTextField(
+                value = selectedDosen,
+                onValueChange = { },
+                label = { Text("Pilih Dosen Pengampu") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth(),
+                trailingIcon = {
+                    androidx.compose.material3.Icon(
+                        imageVector = Icons.Default.ArrowDropDown,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .clickable { expanded = true }
+                    )
+                }
+            )
+
+            DropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                dosenList.forEach { dosen ->
+                    DropdownMenuItem(
+                        text = { Text(dosen.nama) },
+                        onClick = {
+                            selectedDosen = dosen.nama
+                            onValueChange(mkEvent.copy(dosenPengampu = dosen.nama))
+                            expanded = false
+                        }
+                    )
                 }
             }
         }
