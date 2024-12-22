@@ -16,6 +16,7 @@ Halaman Insert Mata Kuliah
 ![Screenshot 2024-12-22 160537](https://github.com/user-attachments/assets/18b4833e-4984-4131-b999-87057c7ccece)
 ![Screenshot 2024-12-22 160545](https://github.com/user-attachments/assets/9e05bd3d-29c5-44f8-adf0-acbe1153db2c)
 ![Screenshot 2024-12-22 160633](https://github.com/user-attachments/assets/4fd0913c-5da1-4e9e-aebf-5e72a0e3f3be)
+![Screenshot 2024-12-22 170717](https://github.com/user-attachments/assets/f7172e11-374e-44a4-85ff-1d9b120f94d1)
 ![Screenshot 2024-12-22 160829](https://github.com/user-attachments/assets/cb3c7a6e-ed76-488c-beaf-08c9b1202f29)
 ![Screenshot 2024-12-22 160844](https://github.com/user-attachments/assets/04adc41b-553e-4d1d-a24e-60220c3c274f)
 
